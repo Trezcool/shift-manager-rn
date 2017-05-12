@@ -1,0 +1,8 @@
+// Auth
+export const EMAIL_CHANGED = 'EMAIL_CHANGED';
+export const PASSWORD_CHANGED = 'PASSWORD_CHANGED';
+export const TOGGLE_SCREENS = 'TOGGLE_SCREENS';
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+export const AUTH_REQ_FAILED = 'AUTH_REQ_FAILED';
