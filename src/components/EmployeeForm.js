@@ -14,7 +14,6 @@ const mapStateToProps = ({ employeeForm }) => {
 class EmployeeForm extends Component {
   onButtonPressed = () => {
     const { name, phone, shift, employeeCreate } = this.props;
-    console.log('props', this.props);
     employeeCreate({name, phone, shift: shift || 'Mon'});
   };
 
