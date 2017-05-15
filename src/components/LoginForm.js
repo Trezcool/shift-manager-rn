@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
-import * as AuthActions from '../actions/AuthActions'
+import * as AuthActions from '../actions/AuthActions';
 import { Button, Card, CardSection, Input, Link, Spinner } from './common';
 
-const mapStateToProps = (state) => ({
-  email: state.auth.email,
-  password: state.auth.password,
-  error: state.auth.error,
-  isLogin: state.auth.isLogin,
-  loading: state.auth.loading,
-});
+const mapStateToProps = ({ auth }) => {
+  const { email, password, error, isLogin, loading } = auth;
+  return { email, password, error, isLogin, loading }
+};
 
 class LoginForm extends Component {
-  onSubmit = async () => {
+  constructor() {
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit = () => {
     const { email, password, logInOrSignUp } = this.props;
 
     if (email && password) {
@@ -28,7 +30,7 @@ class LoginForm extends Component {
 
     if (loading) {
       return (
-        <CardSection lastChild={true}>
+        <CardSection lastChild>
           <Spinner color="#2980B9"/>
         </CardSection>
       )
@@ -36,15 +38,15 @@ class LoginForm extends Component {
 
     return (
       <View>
-        <CardSection lastChild={true}>
+        <CardSection lastChild>
           <Button
             title={isLogin && 'Log In' || 'Sign Up'}
             disabled={!(email && password)}
-            onPress={this.onSubmit.bind(this)}
+            onPress={this.onSubmit}
             style={{flex: 1}}
           />
         </CardSection>
-        <CardSection lastChild={true}>
+        <CardSection lastChild>
           <Link
             title={isLogin && 'Or sign up' || 'Or log in'}
             onPress={() => toggleScreens()}
@@ -85,7 +87,7 @@ class LoginForm extends Component {
               returnKeyType="go"
               clearButtonMode="while-editing"
               enablesReturnKeyAutomatically
-              onSubmitEditing={this.onSubmit.bind(this)}
+              onSubmitEditing={this.onSubmit}
             />
           </CardSection>
 
@@ -101,7 +103,8 @@ class LoginForm extends Component {
 
 const styles = StyleSheet.create({
   error: {
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
     color: 'red',
     alignSelf: 'center',
     fontFamily: 'open-sans-regular',

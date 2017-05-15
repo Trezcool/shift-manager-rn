@@ -17,14 +17,15 @@ export default (state = initialState, action) => {
       return {...state, password: action.payload};
     case types.TOGGLE_SCREENS:
       return {...state, ...initialState, isLogin: !state.isLogin};
-    case types.AUTH_REQUEST:
+    case types.AUTH_REQ_STARTED:
       return {...state, error: '', loading: true};
     case types.LOGIN_SUCCESS:
       return {...state, ...initialState, user: action.payload};
     case types.SIGN_UP_SUCCESS:
+    case types.LOGOUT_SUCCESS:
       return {...state, ...initialState};
     case types.AUTH_REQ_FAILED:
-      return {...state, error: action.payload, loading: false};
+      return {...state, error: action.payload, loading: false, password: ''};
     default:
       return state
   }

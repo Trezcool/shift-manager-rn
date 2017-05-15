@@ -1,3 +1,6 @@
+import { Alert } from 'react-native';
+import { Actions, ActionConst } from 'react-native-router-flux';
+
 import * as types from './types';
 
 //noinspection JSUnusedGlobalSymbols
@@ -20,27 +23,39 @@ export const passwordChanged = (password) => {
 export const toggleScreens = () => ({type: types.TOGGLE_SCREENS});
 
 //noinspection JSUnusedGlobalSymbols
-export const logInOrSignUp = ({email, password}) => {
-  return async (dispatch, getState, {firebaseAuth}) => {
-    console.log('firebaseAuth', firebaseAuth);
+export const logInOrSignUp = ({ email, password }) => {
+  return async (dispatch, getState, { firebaseAuth }) => {
     try {
-      dispatch({type: types.AUTH_REQUEST});
+      dispatch({type: types.AUTH_REQ_STARTED});
       if (getState().auth.isLogin) {
-        await firebaseAuth.signInWithEmailAndPassword(email, password);
-        dispatch({type: types.LOGIN_SUCCESS, payload: firebaseAuth.currentUser});
+        // login
+        const user = await firebaseAuth.signInWithEmailAndPassword(email, password);
+        dispatch({type: types.LOGIN_SUCCESS, payload: user});
+        // go to employee list screen
+        Actions.main({type: ActionConst.RESET});
       } else {
+        // sign up
         await firebaseAuth.createUserWithEmailAndPassword(email, password);
         dispatch({type: types.SIGN_UP_SUCCESS});
-        // Alert.alert('Success', 'Signed up successfully.\nPlease log in.');
+        Alert.alert('Success', 'Signed up successfully.\nPlease log in.');
       }
     } catch (e) {
-      console.log('error', e.message);
       dispatch({type: types.AUTH_REQ_FAILED, payload: e.message});
-      // Alert.alert('Error!', e.message);
     }
   };
 };
 
-// export const logout = async (dispatch, getState) => {
-//
-// };
+export const logout = () => {
+  return async (dispatch, getState, { firebaseAuth }) => {
+    try {
+      // log user out
+      dispatch({type: types.AUTH_REQ_STARTED});
+      await firebaseAuth.signOut();
+      dispatch({type: types.LOGOUT_SUCCESS});
+      // go back to login screen
+      Actions.auth({type: ActionConst.RESET});
+    } catch (e) {
+      dispatch({type: types.AUTH_REQ_FAILED, payload: e.message});
+    }
+  };
+};

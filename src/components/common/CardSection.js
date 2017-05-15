@@ -4,8 +4,9 @@ import { View, StyleSheet } from 'react-native';
 class CardSection extends Component {
 
   render() {
+    const { style, lastChild } = this.props;
     return (
-      <View style={[styles.container, !this.props.lastChild && styles.customBorderBottom]}>
+      <View style={[styles.container, style && style, !lastChild && styles.customBorderBottom]}>
         {this.props.children}
       </View>
     );

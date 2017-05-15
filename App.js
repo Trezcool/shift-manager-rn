@@ -6,13 +6,14 @@ import thunk from 'redux-thunk';
 import { Font } from 'expo';
 import firebase from 'firebase';
 
-import reducers from './src/reducers'
-import LoginForm from './src/components/LoginForm';
-import { Header, Spinner } from './src/components/common';
+import reducers from './src/reducers';
+import Router from './src/Router';
+import { Spinner } from './src/components/common';
 
 export default class App extends Component {
   state = {
     store: null,
+    fontsLoaded: false,
   };
 
   componentWillMount() {
@@ -28,7 +29,8 @@ export default class App extends Component {
     firebase.initializeApp(firebaseConf);
     // create app store
     const firebaseAuth = firebase.auth();
-    const store = createStore(reducers, applyMiddleware(thunk.withExtraArgument({firebaseAuth})));
+    const firebaseDB = firebase.database();
+    const store = createStore(reducers, applyMiddleware(thunk.withExtraArgument({firebaseAuth, firebaseDB})));
     this.setState({store})
   }
 
@@ -48,8 +50,7 @@ export default class App extends Component {
   renderView = () => {
     return this.state.fontsLoaded ? (
       <View style={styles.container}>
-        <Header title="Cool Manager" />
-        <LoginForm />
+        <Router />
       </View>
     ) : <Spinner color="#2980B9" />;
   };
@@ -66,5 +67,6 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#EAECEE',
   },
 });
