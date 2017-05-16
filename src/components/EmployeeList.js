@@ -1,24 +1,47 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { ListView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { logout } from '../actions/AuthActions';
+import { employeesFetch } from '../actions/EmployeeActions';
+import { Spinner } from './common';
+import ListItem from './ListItem';
+
+const mapStateToProps = state => {
+  // transform employees state obj into list
+  let { employees, loading } = state.employees;
+  employees = _.map(employees, (employee, uid) => ({...employee, uid}));
+  return { employees, loading }
+};
 
 class EmployeeList extends Component {
+  componentWillMount() {
+    this.props.employeesFetch();
+    this.createDataSource(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.createDataSource(nextProps)
+  }
+
+  createDataSource({ employees }) {
+    //noinspection JSUnusedGlobalSymbols
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.uid !== r2.uid});
+    this.dataSource = ds.cloneWithRows(employees);
+  }
+
+  renderRow = employee => {
+    return <ListItem employee={employee} />
+  };
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Employee 1</Text>
-        <Text>Employee 2</Text>
-        <Text>Employee 3</Text>
-        <Text>Employee 4</Text>
-        <Text>Employee 5</Text>
-        <Text>Employee 6</Text>
-        <Text>Employee 7</Text>
-        <Text>Employee 8</Text>
-        <Text>Employee 9</Text>
-        <Text>Employee 10</Text>
-      </View>
+    return this.props.loading ? <View style={{flex: 1}}><Spinner color="#2980B9"/></View> : (
+      <ListView
+        enableEmptySections
+        dataSource={this.dataSource}
+        renderRow={this.renderRow}
+        style={styles.container}
+      />
     );
   }
 }
@@ -29,4 +52,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, {logout})(EmployeeList);
+export default connect(mapStateToProps, {employeesFetch})(EmployeeList);

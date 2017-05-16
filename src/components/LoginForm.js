@@ -12,11 +12,6 @@ const mapStateToProps = ({ auth }) => {
 };
 
 class LoginForm extends Component {
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
   onSubmit = () => {
     const { email, password, logInOrSignUp } = this.props;
 

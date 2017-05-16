@@ -33,7 +33,7 @@ class EmployeeForm extends Component {
         <Button
           title="Create"
           disabled={!(name && phone)}
-          onPress={this.onButtonPressed.bind(this)}
+          onPress={this.onButtonPressed}
           style={{flex: 1}}
         />
       </CardSection>
@@ -42,6 +42,7 @@ class EmployeeForm extends Component {
 
   render() {
     const { name, phone, shift, error, employeeFormUpdate } = this.props;
+    const shiftDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     return (
       <Animatable.View animation="fadeInDown">
@@ -80,13 +81,7 @@ class EmployeeForm extends Component {
               onValueChange={(value) => employeeFormUpdate({prop: 'shift', value})}
               // style={{flex: 1}}
             >
-              <Picker.Item label="Monday" value="Mon" />
-              <Picker.Item label="Tuesday" value="Tue" />
-              <Picker.Item label="Wednesday" value="Wed" />
-              <Picker.Item label="Thursday" value="Thu" />
-              <Picker.Item label="Friday" value="Fri" />
-              <Picker.Item label="Saturday" value="Sat" />
-              <Picker.Item label="Sunday" value="Sun" />
+              {shiftDays.map((day) => <Picker.Item key={day} label={day} value={day} />)}
             </Picker>
           </CardSection>
 

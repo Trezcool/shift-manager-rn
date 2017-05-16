@@ -12,7 +12,7 @@ const RouterComponent = (props) => {
   return (
     <Router sceneStyle={{paddingTop: 65, backgroundColor: '#EAECEE'}}>
       <Scene key="auth">
-        <Scene key="login" component={LoginForm} title="Login" titleStyle={styles.title} />
+        <Scene key="login" component={LoginForm} title="Log In" titleStyle={styles.title} />
       </Scene>
 
       <Scene key="main">
@@ -23,8 +23,10 @@ const RouterComponent = (props) => {
           titleStyle={styles.title}
           onLeft={() => props.logout()}
           leftTitle="Log Out"
+          leftButtonTextStyle={styles.asideTitleText}
           onRight={() => Actions.employeeCreate()}
           rightTitle="Add"
+          rightButtonTextStyle={styles.asideTitleText}
           initial
         />
         <Scene key="employeeCreate" component={EmployeeForm} title="Create Employee" titleStyle={styles.title} />
@@ -46,6 +48,11 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.6,
     // elevation: 2,
     // position: 'relative',
+  },
+  asideTitleText: {
+    fontSize: 16,
+    color: '#2980B9',
+    fontFamily: 'open-sans-regular',
   }
 });
 

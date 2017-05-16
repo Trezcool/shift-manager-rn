@@ -29,3 +29,14 @@ export const employeeCreate = ({ name, phone, shift }) => {
     }
   };
 };
+
+export const employeesFetch = () => {
+  return (dispatch, getState, { firebaseAuth, firebaseDB }) => {
+    // fetch employees
+    dispatch({type: types.EMPLOYEES_FETCH_REQ_STARTED});
+    const uid = firebaseAuth.currentUser.uid;
+    firebaseDB.ref(`/users/${uid}/employees`).on('value', snapshot => {
+      dispatch({type: types.EMPLOYEES_FETCH_SUCCESS, payload: snapshot.val()})
+    });
+  };
+};

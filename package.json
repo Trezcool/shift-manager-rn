@@ -21,6 +21,7 @@
   "dependencies": {
     "expo": "^16.0.0",
     "firebase": "^3.9.0",
+    "lodash": "^4.0.0",
     "react": "16.0.0-alpha.6",
     "react-native": "^0.43.4",
     "react-native-animatable": "^1.2.0",
