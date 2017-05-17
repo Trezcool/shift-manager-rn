@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { EmployeeEditActions } from '../actions/EmployeeActions';
@@ -26,8 +26,15 @@ class EmployeeEdit extends Component {
   };
 
   onDeleteButtonPressed = () => {
-    // const { name, phone, shift, employeeUpdate } = this.props;
-    // employeeUpdate({name, phone, shift});
+    const { employee, employeeDelete } = this.props;
+    Alert.alert(
+      'Delete?',
+      'Are you sure you want to delete this employee?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Deletion action canceled'), style: 'cancel'},
+        {text: 'OK', onPress: () => employeeDelete(employee.uid)},
+      ]
+    );
   };
 
   renderButton = () => {

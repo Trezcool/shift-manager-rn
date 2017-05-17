@@ -52,7 +52,7 @@ export const employeesFetch = () => {
 };
 
 // ------------------------------------------------------------- //
-//                             EDIT                              //
+//                          EDIT/DELETE                          //
 // ------------------------------------------------------------- //
 
 const employeeEditFormInit = employee => {
@@ -79,4 +79,22 @@ const employeeUpdate = (id, data) => {
   };
 };
 
-export const EmployeeEditActions = {employeeEditFormInit, employeeUpdate};
+const employeeDelete= (id) => {
+  return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
+    try {
+      // delete employee
+      dispatch({type: types.EMPLOYEE_REQ_STARTED});
+      const uid = firebaseAuth.currentUser.uid;
+      const ref = firebaseDB.ref(`/users/${uid}/employees/${id}`);
+      await ref.remove();
+      dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
+      // go back to employee list screen
+      Actions.pop({type: ActionConst.RESET});
+      Alert.alert('Success', 'Employee deleted successfully.');
+    } catch (e) {
+      dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
+    }
+  };
+};
+
+export const EmployeeEditActions = {employeeEditFormInit, employeeUpdate, employeeDelete};
