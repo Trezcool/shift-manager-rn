@@ -3,9 +3,14 @@ import { Picker, StyleSheet, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
-
 import { employeeFormUpdate } from '../actions/EmployeeActions';
 import { Card, CardSection, Input } from './common';
+
+
+const mapStateToProps = ({ employeeForm }) => {
+  const { name, phone, shift, error } = employeeForm;
+  return { name, phone, shift, error }
+};
 
 class EmployeeForm extends Component {
   render() {
@@ -80,4 +85,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, {employeeFormUpdate})(EmployeeForm);
+export default connect(mapStateToProps, {employeeFormUpdate})(EmployeeForm);

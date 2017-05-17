@@ -8,8 +8,8 @@ import { Button, CardSection, Spinner } from './common';
 import EmployeeForm from './EmployeeForm';
 
 const mapStateToProps = ({ employeeForm }) => {
-  const { name, phone, shift, error, loading } = employeeForm;
-  return { name, phone, shift, error, loading }
+  const { name, phone, shift, loading } = employeeForm;
+  return { name, phone, shift, loading }
 };
 
 class EmployeeEdit extends Component {
@@ -70,10 +70,8 @@ class EmployeeEdit extends Component {
   };
 
   render() {
-    const { name, phone, shift, error } = this.props;
-
     return (
-      <EmployeeForm name={name} phone={phone} shift={shift} error={error}>
+      <EmployeeForm>
         {this.renderButton()}
       </EmployeeForm>
     );
