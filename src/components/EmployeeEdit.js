@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Alert, View } from 'react-native';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { EmployeeEditActions } from '../actions/EmployeeActions';
@@ -22,14 +23,23 @@ class EmployeeEdit extends Component {
     const { name, phone, shift, employeeUpdate, employee } = this.props;
     // clean empty entries
     const data = _.omitBy({name, phone, shift}, _.isEmpty);
-    employeeUpdate(employee.uid, data);
+
+    // only update if values changed
+    let conditions = [];
+    _.forIn(data, (val, key) => conditions.push(data[key] === employee[key]));
+
+    if (!conditions.every(c => c === true)) {
+      employeeUpdate(employee.uid, data);
+    } else {  // if nothing changed, go back to employee list screen
+      Actions.pop({type: ActionConst.RESET});
+    }
   };
 
   onDeleteButtonPressed = () => {
     const { employee, employeeDelete } = this.props;
     Alert.alert(
-      'Delete?',
-      'Are you sure you want to delete this employee?',
+      'Fire?',
+      'Are you sure you want to fire this employee?',
       [
         {text: 'Cancel', onPress: () => console.log('Deletion action canceled'), style: 'cancel'},
         {text: 'OK', onPress: () => employeeDelete(employee.uid)},
@@ -59,7 +69,7 @@ class EmployeeEdit extends Component {
         </CardSection>
         <CardSection lastChild>
           <Button
-            title="Delete"
+            title="Fire"
             onPress={this.onDeleteButtonPressed}
             style={{flex: 1, backgroundColor: 'transparent'}}
             titleStyle={{color: '#2980B9'}}

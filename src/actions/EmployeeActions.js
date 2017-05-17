@@ -90,7 +90,7 @@ const employeeDelete= (id) => {
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
       Actions.pop({type: ActionConst.RESET});
-      Alert.alert('Success', 'Employee deleted successfully.');
+      Alert.alert('Success', 'Employee fired successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
     }
