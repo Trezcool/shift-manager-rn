@@ -4,7 +4,8 @@ import { Actions, Router, Scene } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { logout } from './actions/AuthActions';
-import EmployeeForm from './components/EmployeeForm';
+import EmployeeCreate from './components/EmployeeCreate';
+import EmployeeEdit from './components/EmployeeEdit';
 import EmployeeList from './components/EmployeeList';
 import LoginForm from './components/LoginForm';
 
@@ -29,7 +30,8 @@ const RouterComponent = (props) => {
           rightButtonTextStyle={styles.asideTitleText}
           initial
         />
-        <Scene key="employeeCreate" component={EmployeeForm} title="Create Employee" titleStyle={styles.title} />
+        <Scene key="employeeCreate" component={EmployeeCreate} title="Create Employee" titleStyle={styles.title} />
+        <Scene key="employeeEdit" component={EmployeeEdit} title="Edit Employee" titleStyle={styles.title} />
       </Scene>
     </Router>
   )

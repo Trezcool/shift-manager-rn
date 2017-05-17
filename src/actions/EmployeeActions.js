@@ -3,7 +3,10 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 
 import * as types from './types';
 
-//noinspection JSUnusedGlobalSymbols
+// ------------------------------------------------------------- //
+//                            CREATE                             //
+// ------------------------------------------------------------- //
+
 export const employeeFormUpdate = ({ prop, value }) => {
   return {
     type: types.EMPLOYEE_FORM_UPDATE,
@@ -11,8 +14,9 @@ export const employeeFormUpdate = ({ prop, value }) => {
   }
 };
 
-//noinspection JSUnusedGlobalSymbols
-export const employeeCreate = ({ name, phone, shift }) => {
+const employeeCreateFormReset = () => ({type: types.EMPLOYEE_FORM_RESET});
+
+const employeeCreate = ({ name, phone, shift }) => {
   return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
     try {
       // create employee
@@ -30,6 +34,12 @@ export const employeeCreate = ({ name, phone, shift }) => {
   };
 };
 
+export const EmployeeCreateActions = {employeeCreateFormReset, employeeCreate};
+
+// ------------------------------------------------------------- //
+//                            FETCH                              //
+// ------------------------------------------------------------- //
+
 export const employeesFetch = () => {
   return (dispatch, getState, { firebaseAuth, firebaseDB }) => {
     // fetch employees
@@ -40,3 +50,33 @@ export const employeesFetch = () => {
     });
   };
 };
+
+// ------------------------------------------------------------- //
+//                             EDIT                              //
+// ------------------------------------------------------------- //
+
+const employeeEditFormInit = employee => {
+  let payload = {...employee};
+  delete payload.uid;  // uid isn't part of the state
+  return {type: types.EMPLOYEE_FORM_INIT, payload}
+};
+
+const employeeUpdate = (id, data) => {
+  return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
+    try {
+      // update employee
+      dispatch({type: types.EMPLOYEE_REQ_STARTED});
+      const uid = firebaseAuth.currentUser.uid;
+      const ref = firebaseDB.ref(`/users/${uid}/employees/${id}`);
+      await ref.update(data);
+      dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
+      // go back to employee list screen
+      Actions.pop({type: ActionConst.RESET});
+      Alert.alert('Success', 'Employee updated successfully.');
+    } catch (e) {
+      dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
+    }
+  };
+};
+
+export const EmployeeEditActions = {employeeEditFormInit, employeeUpdate};

@@ -3,45 +3,13 @@ import { Picker, StyleSheet, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
-import * as EmployeeActions from '../actions/EmployeeActions';
-import { Button, Card, CardSection, Input, Spinner } from './common';
 
-const mapStateToProps = ({ employeeForm }) => {
-  const { name, phone, shift, error, loading } = employeeForm;
-  return { name, phone, shift, error, loading }
-};
+import { employeeFormUpdate } from '../actions/EmployeeActions';
+import { Card, CardSection, Input } from './common';
 
 class EmployeeForm extends Component {
-  onButtonPressed = () => {
-    const { name, phone, shift, employeeCreate } = this.props;
-    employeeCreate({name, phone, shift: shift || 'Mon'});
-  };
-
-  renderButton = () => {
-    const { name, phone, loading } = this.props;
-
-    if (loading) {
-      return (
-        <CardSection lastChild>
-          <Spinner color="#2980B9"/>
-        </CardSection>
-      )
-    }
-
-    return (
-      <CardSection lastChild>
-        <Button
-          title="Create"
-          disabled={!(name && phone)}
-          onPress={this.onButtonPressed}
-          style={{flex: 1}}
-        />
-      </CardSection>
-    )
-  };
-
   render() {
-    const { name, phone, shift, error, employeeFormUpdate } = this.props;
+    const { name, phone, shift, employeeFormUpdate, error, children } = this.props;
     const shiftDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     return (
@@ -53,7 +21,7 @@ class EmployeeForm extends Component {
               placeholder="John Doe"
               value={name}
               clearButtonMode="while-editing"
-              onChangeText={(value) => employeeFormUpdate({prop: 'name', value})}
+              onChangeText={value => employeeFormUpdate({prop: 'name', value})}
               returnKeyType="next"
               // blurOnSubmit={false}
               // onSubmitEditing={() => this.passwordInput.focus()}  // FIXME: `focus` no longer exist :(
@@ -67,7 +35,7 @@ class EmployeeForm extends Component {
               value={phone}
               clearButtonMode="while-editing"
               keyboardType="phone-pad"
-              onChangeText={(value) => employeeFormUpdate({prop: 'phone', value})}
+              onChangeText={value => employeeFormUpdate({prop: 'phone', value})}
               returnKeyType="next"
               // blurOnSubmit={false}
               // onSubmitEditing={() => this.passwordInput.focus()}  // FIXME: `focus` no longer exist :(
@@ -78,7 +46,7 @@ class EmployeeForm extends Component {
             <Text style={styles.pickerLabel}>Shift</Text>
             <Picker
               selectedValue={shift}
-              onValueChange={(value) => employeeFormUpdate({prop: 'shift', value})}
+              onValueChange={value => employeeFormUpdate({prop: 'shift', value})}
               // style={{flex: 1}}
             >
               {shiftDays.map((day) => <Picker.Item key={day} label={day} value={day} />)}
@@ -88,7 +56,7 @@ class EmployeeForm extends Component {
           <Text style={styles.error}>
             {error}
           </Text>
-          {this.renderButton()}
+          {children}
         </Card>
       </Animatable.View>
     );
@@ -112,4 +80,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, EmployeeActions)(EmployeeForm);
+export default connect(null, {employeeFormUpdate})(EmployeeForm);

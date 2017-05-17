@@ -5,14 +5,14 @@ import * as Animatable from 'react-native-animatable';
 class Button extends Component {
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, style, titleStyle } = this.props;
     return (
       <TouchableOpacity
-        style={[styles.container, this.props.style, disabled && styles.disabled]}
+        style={[styles.container, style, disabled && styles.disabled]}
         disabled={disabled}
         onPress={this.props.onPress}
       >
-        <Text style={styles.title}>{this.props.title}</Text>
+        <Text style={[styles.title, titleStyle]}>{this.props.title}</Text>
       </TouchableOpacity>
     );
   }
