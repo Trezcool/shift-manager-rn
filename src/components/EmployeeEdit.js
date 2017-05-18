@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
+import Communications from 'react-native-communications';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { EmployeeEditActions } from '../actions/EmployeeActions';
-import { Button, CardSection, Spinner } from './common';
+import { Button, CardSection, Confirm, Spinner } from './common';
 import EmployeeForm from './EmployeeForm';
 
 const mapStateToProps = ({ employeeForm }) => {
@@ -14,6 +15,10 @@ const mapStateToProps = ({ employeeForm }) => {
 };
 
 class EmployeeEdit extends Component {
+  state = {
+    modalVisible: false,
+  };
+
   componentWillMount() {
     const { employee, employeeEditFormInit} = this.props;
     employeeEditFormInit(employee)
@@ -35,16 +40,16 @@ class EmployeeEdit extends Component {
     }
   };
 
+  onTextButtonPressed = () => {
+    // text schedule to employee
+    const { name, phone, shift } = this.props.employee;
+    const msg = `Hey ${name}, your upcoming shift is on ${shift}.\nSee you!\n\nCEO Trezcool.`;
+    Communications.text(phone, msg);
+  };
+
   onDeleteButtonPressed = () => {
     const { employee, employeeDelete } = this.props;
-    Alert.alert(
-      'Fire?',
-      'Are you sure you want to fire this employee?',
-      [
-        {text: 'Cancel', onPress: () => console.log('Deletion action canceled'), style: 'cancel'},
-        {text: 'OK', onPress: () => employeeDelete(employee.uid)},
-      ]
-    );
+    employeeDelete(employee.uid);
   };
 
   renderButton = () => {
@@ -67,14 +72,31 @@ class EmployeeEdit extends Component {
             style={{flex: 1}}
           />
         </CardSection>
+
         <CardSection lastChild>
           <Button
-            title="Fire"
-            onPress={this.onDeleteButtonPressed}
+            title="Text Schedule"
+            onPress={this.onTextButtonPressed}
+            style={{flex: 1}}
+          />
+        </CardSection>
+
+        <CardSection lastChild>
+          <Button
+            title="Fire Employee"
+            onPress={() => this.setState({modalVisible: true})}
             style={{flex: 1, backgroundColor: 'transparent'}}
             titleStyle={{color: '#2980B9'}}
           />
         </CardSection>
+
+        <Confirm
+          visible={this.state.modalVisible}
+          onAccept={this.onDeleteButtonPressed}
+          onDecline={() => this.setState({modalVisible: false})}
+        >
+          Are you sure you want to fire this employee?
+        </Confirm>
       </View>
     )
   };
