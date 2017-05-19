@@ -16,7 +16,7 @@ export const employeeFormUpdate = ({ prop, value }) => {
 
 const employeeCreateFormReset = () => ({type: types.EMPLOYEE_FORM_RESET});
 
-const employeeCreate = ({ name, phone, shift }) => {
+const employeeCreate = ({ name, phone, shift }, navigation) => {
   return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
     try {
       // create employee
@@ -26,7 +26,8 @@ const employeeCreate = ({ name, phone, shift }) => {
       await ref.push({name, phone, shift});
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      Actions.pop({type: ActionConst.RESET});
+      // Actions.pop({type: ActionConst.RESET});
+      navigation.goBack();
       Alert.alert('Success', 'Employee created successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
@@ -61,7 +62,7 @@ const employeeEditFormInit = employee => {
   return {type: types.EMPLOYEE_FORM_INIT, payload}
 };
 
-const employeeUpdate = (id, data) => {
+const employeeUpdate = (id, data, navigation) => {
   return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
     try {
       // update employee
@@ -71,7 +72,8 @@ const employeeUpdate = (id, data) => {
       await ref.update(data);
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      Actions.pop({type: ActionConst.RESET});
+      // Actions.pop({type: ActionConst.RESET});
+      navigation.goBack();
       Alert.alert('Success', 'Employee updated successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
@@ -79,7 +81,7 @@ const employeeUpdate = (id, data) => {
   };
 };
 
-const employeeDelete= (id) => {
+const employeeDelete= (id, navigation) => {
   return async (dispatch, getState, { firebaseAuth, firebaseDB }) => {
     try {
       // delete employee
@@ -89,7 +91,8 @@ const employeeDelete= (id) => {
       await ref.remove();
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      Actions.pop({type: ActionConst.RESET});
+      // Actions.pop({type: ActionConst.RESET});
+      navigation.goBack();
       Alert.alert('Success', 'Employee fired successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});

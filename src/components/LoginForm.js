@@ -13,10 +13,10 @@ const mapStateToProps = ({ auth }) => {
 
 class LoginForm extends Component {
   onSubmit = () => {
-    const { email, password, logInOrSignUp } = this.props;
+    const { email, password, logInOrSignUp, navigation } = this.props;
 
     if (email && password) {
-      logInOrSignUp({email, password});
+      logInOrSignUp({email, password}, navigation);
     }
   };
 

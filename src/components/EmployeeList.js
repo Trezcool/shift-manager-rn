@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { ListView, StyleSheet, View } from 'react-native';
+import { Button as RNButton, ListView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { employeesFetch } from '../actions/EmployeeActions';
@@ -31,7 +31,7 @@ class EmployeeList extends Component {
   }
 
   renderRow = employee => {
-    return <ListItem employee={employee} />
+    return <ListItem employee={employee} navigation={this.props.navigation} />
   };
 
   render() {

@@ -7,7 +7,7 @@ import { Font } from 'expo';
 import firebase from 'firebase';
 
 import reducers from './src/reducers';
-import Router from './src/Router';
+import AppNavigator from './src/navigators/AppNavigator';
 import { Spinner } from './src/components/common';
 
 export default class App extends Component {
@@ -50,7 +50,7 @@ export default class App extends Component {
   renderView = () => {
     return this.state.fontsLoaded ? (
       <View style={styles.container}>
-        <Router />
+        <AppNavigator />
       </View>
     ) : <Spinner color="#2980B9" />;
   };

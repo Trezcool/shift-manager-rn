@@ -6,8 +6,9 @@ import { CardSection } from './common';
 
 class ListItem extends Component {
   onRowPressed = () => {
-    const { employee } = this.props;
-    Actions.employeeEdit({title: employee.name, employee});
+    const { employee, navigation } = this.props;
+    // Actions.employeeEdit({title: employee.name, employee});
+    navigation.navigate('EmployeeEdit', { employee })
   };
 
   render() {
