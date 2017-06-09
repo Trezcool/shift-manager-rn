@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import firebase from 'firebase';
+import Sentry from 'sentry-expo';
 
 import reducers from './src/reducers';
 import AppNavigator from './src/navigators/AppNavigator';
@@ -17,6 +18,7 @@ export default class App extends Component {
   };
 
   componentWillMount() {
+    //noinspection JSIgnoredPromiseFromCall
     this._loadAssetsAsync();
     this._configureFirebase();
     this._createStore();
@@ -85,3 +87,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+Sentry.config('https://1e9c442a83dc4b68a72ab6206efc07e3@sentry.io/178178').install();

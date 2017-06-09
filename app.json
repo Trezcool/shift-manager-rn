@@ -9,6 +9,18 @@
     },
     "ios": {
       "supportsTablet": true
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "tresor-kambembo",
+            "project": "shift-manager-rn",
+            "authToken": "e03e7ac959d44f7392c36624cbb29f5ba258e3ea04ee4bc1af639f0942a00f4c"
+          }
+        }
+      ]
     }
   }
 }
