@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#adb9c2',
     fontSize: 22,
+    fontFamily: 'tangerine-bold',
   }
 });
 

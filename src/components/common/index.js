@@ -1,3 +1,4 @@
+export * from './AppBackground';
 export * from './Button';
 export * from './Card';
 export * from './CardSection';

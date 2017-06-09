@@ -8,7 +8,7 @@ import firebase from 'firebase';
 
 import reducers from './src/reducers';
 import AppNavigator from './src/navigators/AppNavigator';
-import { Spinner } from './src/components/common';
+import { AppBackground, Spinner } from './src/components/common';
 
 export default class App extends Component {
   state = {
@@ -58,7 +58,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={this.state.store}>
-        {this.renderView()}
+        <AppBackground>
+          {this.renderView()}
+        </AppBackground>
       </Provider>
     );
   }
@@ -67,6 +69,5 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAECEE',
-  },
+  }
 });

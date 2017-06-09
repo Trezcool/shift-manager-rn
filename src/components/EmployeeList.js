@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Button as RNButton, ListView, StyleSheet, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
 import { employeesFetch } from '../actions/EmployeeActions';
@@ -15,6 +16,7 @@ const mapStateToProps = state => {
 };
 
 class EmployeeList extends Component {
+  //noinspection JSUnusedGlobalSymbols
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: 'Employees',
     headerLeft: <RNButton title="Log Out" onPress={() => navigation.state.params.logout(navigation)} color={'#2980B9'} />,
@@ -42,19 +44,21 @@ class EmployeeList extends Component {
 
   render() {
     return this.props.loading ? <View style={{flex: 1}}><Spinner color="#2980B9"/></View> : (
-      <ListView
-        enableEmptySections
-        dataSource={this.dataSource}
-        renderRow={this.renderRow}
-        style={styles.container}
-      />
+      <Animatable.View animation="slideInUp" style={styles.container}>
+        <ListView
+          enableEmptySections
+          dataSource={this.dataSource}
+          renderRow={this.renderRow}
+          style={styles.container}
+        />
+      </Animatable.View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-
+    flex: 1,
   }
 });
 

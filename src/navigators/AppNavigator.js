@@ -9,14 +9,16 @@ import LoginForm from '../components/LoginForm';
 
 const styles = StyleSheet.create({
   header: {
-
-  },
-  headerBackTitle: {
-    color: '#2980B9',
+    borderBottomWidth: 2,
+    borderColor: '#2980B9',
+    shadowColor: '#2E86C1',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.4,
+    elevation: 2,
+    position: 'relative',
   },
   title: {
     fontSize: 30,
-    color: '#2980B9',
     fontFamily: 'tangerine-bold',
   }
 });
@@ -47,11 +49,11 @@ const RouteConfigs = {
 
 const NavigatorConfig = {
   initialRouteName: 'Login',
+  cardStyle: { backgroundColor: 'transparent' },
   navigationOptions: {
     headerStyle: styles.header,
     headerTitleStyle: styles.title,
-    headerBackTitleStyle: styles.headerBackTitle,
-    headerTintColor: 'blue',
+    headerTintColor: '#2980B9',
   }
 };
 

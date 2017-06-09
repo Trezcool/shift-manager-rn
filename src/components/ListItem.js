@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 
 import { CardSection } from './common';
 
 class ListItem extends Component {
   onRowPressed = () => {
     const { employee, navigation } = this.props;
-    // Actions.employeeEdit({title: employee.name, employee});
     navigation.navigate('EmployeeEdit', { employee })
   };
 
