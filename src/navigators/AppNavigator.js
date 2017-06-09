@@ -1,9 +1,7 @@
 import React from 'react';
-import { Button as RNButton, StyleSheet } from 'react-native';
-import { addNavigationHelpers, StackNavigator } from 'react-navigation';
-import { connect } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
-import { logout } from '../actions/AuthActions';
 import EmployeeCreate from '../components/EmployeeCreate';
 import EmployeeEdit from '../components/EmployeeEdit';
 import EmployeeList from '../components/EmployeeList';
@@ -32,11 +30,6 @@ const RouteConfigs = {
   },
   EmployeeList: {
     screen: EmployeeList,
-    navigationOptions: ({ navigation, logout }) => ({
-      title: 'Employees',
-      headerLeft: <RNButton title="Log Out" onPress={() => logout(navigation)} color={'#2980B9'} />,
-      headerRight: <RNButton title="Add" onPress={() => navigation.navigate('EmployeeCreate')} color={'#2980B9'} />,
-    })
   },
   EmployeeCreate: {
     screen: EmployeeCreate,
@@ -54,7 +47,6 @@ const RouteConfigs = {
 
 const NavigatorConfig = {
   initialRouteName: 'Login',
-  // mode: 'modal', // default: `card`
   navigationOptions: {
     headerStyle: styles.header,
     headerTitleStyle: styles.title,
@@ -63,12 +55,5 @@ const NavigatorConfig = {
   }
 };
 
-export const AppNavigator = StackNavigator(RouteConfigs, NavigatorConfig);
-
-const AppWithNavigationState = ({ dispatch, nav }) => (
-  <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
-);
-
-const mapStateToProps = ({ nav }) => ({ nav });
-
-export default connect(mapStateToProps, { logout })(AppWithNavigationState);
+const AppNavigator = StackNavigator(RouteConfigs, NavigatorConfig);
+export default AppNavigator;

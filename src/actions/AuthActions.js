@@ -1,8 +1,8 @@
 import { Alert } from 'react-native';
-import { Actions, ActionConst } from 'react-native-router-flux';
+import { NavigationActions } from 'react-navigation';
 
 import * as types from './types';
-import { navigateReset } from "../utils";
+import { navigateReset } from '../utils';
 
 //noinspection JSUnusedGlobalSymbols
 export const emailChanged = (email) => {
@@ -24,7 +24,7 @@ export const passwordChanged = (password) => {
 export const toggleScreens = () => ({type: types.TOGGLE_SCREENS});
 
 //noinspection JSUnusedGlobalSymbols
-export const logInOrSignUp = ({ email, password }, navigation) => {
+export const logInOrSignUp = ({ email, password }) => {
   return async (dispatch, getState, { firebaseAuth }) => {
     try {
       dispatch({type: types.AUTH_REQ_STARTED});
@@ -32,9 +32,6 @@ export const logInOrSignUp = ({ email, password }, navigation) => {
         // login
         const user = await firebaseAuth.signInWithEmailAndPassword(email, password);
         dispatch({type: types.LOGIN_SUCCESS, payload: user});
-        // go to employee list screen
-        // Actions.main({type: ActionConst.RESET});
-        navigateReset(navigation, 'EmployeeList')
       } else {
         // sign up
         await firebaseAuth.createUserWithEmailAndPassword(email, password);
@@ -55,8 +52,8 @@ export const logout = (navigation) => {
       await firebaseAuth.signOut();
       dispatch({type: types.LOGOUT_SUCCESS});
       // go back to login screen
-      // Actions.auth({type: ActionConst.RESET});
-      navigation.navigate('Login')
+      const actions = [NavigationActions.navigate({routeName: 'Login'})];
+      navigateReset(navigation, 0, actions)
     } catch (e) {
       dispatch({type: types.AUTH_REQ_FAILED, payload: e.message});
     }

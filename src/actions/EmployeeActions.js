@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import { Actions, ActionConst } from 'react-native-router-flux';
 
 import * as types from './types';
 
@@ -26,8 +25,7 @@ const employeeCreate = ({ name, phone, shift }, navigation) => {
       await ref.push({name, phone, shift});
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      // Actions.pop({type: ActionConst.RESET});
-      navigation.goBack();
+      navigation.goBack(null);
       Alert.alert('Success', 'Employee created successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
@@ -72,8 +70,7 @@ const employeeUpdate = (id, data, navigation) => {
       await ref.update(data);
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      // Actions.pop({type: ActionConst.RESET});
-      navigation.goBack();
+      navigation.goBack(null);
       Alert.alert('Success', 'Employee updated successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});
@@ -91,8 +88,7 @@ const employeeDelete= (id, navigation) => {
       await ref.remove();
       dispatch({type: types.EMPLOYEE_REQ_SUCCESS});
       // go back to employee list screen
-      // Actions.pop({type: ActionConst.RESET});
-      navigation.goBack();
+      navigation.goBack(null);
       Alert.alert('Success', 'Employee fired successfully.');
     } catch (e) {
       dispatch({type: types.EMPLOYEE_REQ_FAILED, payload: e.message});

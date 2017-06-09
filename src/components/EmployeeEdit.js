@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import Communications from 'react-native-communications';
-import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { EmployeeEditActions } from '../actions/EmployeeActions';
@@ -41,8 +40,7 @@ class EmployeeEdit extends Component {
     if (!conditions.every(c => c === true)) {
       employeeUpdate(this.employee.uid, data, navigation);
     } else {  // if nothing changed, go back to employee list screen
-      // Actions.pop({type: ActionConst.RESET});
-      navigation.goBack();
+      navigation.goBack(null);
     }
   };
 

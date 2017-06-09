@@ -1,22 +1,36 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
 import * as AuthActions from '../actions/AuthActions';
 import { Button, Card, CardSection, Input, Link, Spinner } from './common';
+import { navigateReset } from '../utils';
 
 const mapStateToProps = ({ auth }) => {
-  const { email, password, error, isLogin, loading } = auth;
-  return { email, password, error, isLogin, loading }
+  const { email, password, error, isLogin, loading, user } = auth;
+  return { email, password, error, isLogin, loading, user }
 };
 
 class LoginForm extends Component {
+  componentWillReceiveProps(nextProps) {
+    this.onAuthComplete(nextProps);
+  }
+
   onSubmit = () => {
-    const { email, password, logInOrSignUp, navigation } = this.props;
+    const { email, password, logInOrSignUp } = this.props;
 
     if (email && password) {
-      logInOrSignUp({email, password}, navigation);
+      logInOrSignUp({email, password});
+    }
+  };
+
+  onAuthComplete = props => {
+    const { navigation, logout } = this.props;
+    if (props.user) {
+      const actions = [NavigationActions.navigate({routeName: 'EmployeeList', params: { logout }})];
+      navigateReset(navigation, 0, actions);
     }
   };
 

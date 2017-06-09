@@ -15,6 +15,12 @@ const mapStateToProps = state => {
 };
 
 class EmployeeList extends Component {
+  static navigationOptions = ({ navigation, screenProps }) => ({
+    title: 'Employees',
+    headerLeft: <RNButton title="Log Out" onPress={() => navigation.state.params.logout(navigation)} color={'#2980B9'} />,
+    headerRight: <RNButton title="Add" onPress={() => navigation.navigate('EmployeeCreate')} color={'#2980B9'} />,
+  });
+
   componentWillMount() {
     this.props.employeesFetch();
     this.createDataSource(this.props)
