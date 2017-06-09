@@ -26,9 +26,6 @@ const styles = StyleSheet.create({
 const RouteConfigs = {
   Login: {
     screen: LoginForm,
-    navigationOptions: {
-      title: 'Log In',
-    }
   },
   EmployeeList: {
     screen: EmployeeList,

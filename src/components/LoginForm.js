@@ -14,6 +14,14 @@ const mapStateToProps = ({ auth }) => {
 };
 
 class LoginForm extends Component {
+  //noinspection JSUnusedGlobalSymbols
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: params && params.title || 'Log In',
+    }
+  };
+
   componentWillReceiveProps(nextProps) {
     this.onAuthComplete(nextProps);
   }
@@ -34,8 +42,14 @@ class LoginForm extends Component {
     }
   };
 
+  _toggleScreens = () => {
+    const { toggleScreens, isLogin, navigation: { setParams} } = this.props;
+    setParams({title: isLogin && 'Sign Up' || 'Log In'});
+    toggleScreens();
+  };
+
   renderButton = () => {
-    const { email, password, isLogin, loading, toggleScreens } = this.props;
+    const { email, password, isLogin, loading } = this.props;
 
     if (loading) {
       return (
@@ -58,7 +72,7 @@ class LoginForm extends Component {
         <CardSection lastChild>
           <Link
             title={isLogin && 'Or sign up' || 'Or log in'}
-            onPress={() => toggleScreens()}
+            onPress={this._toggleScreens}
           />
         </CardSection>
       </View>
