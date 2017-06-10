@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import Communications from 'react-native-communications';
-import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { EmployeeEditActions } from '../actions/EmployeeActions';
@@ -19,37 +18,42 @@ class EmployeeEdit extends Component {
     modalVisible: false,
   };
 
+  constructor(props) {
+    super(props);
+    this.employee = props.navigation.state.params.employee
+  }
+
   componentWillMount() {
-    const { employee, employeeEditFormInit} = this.props;
-    employeeEditFormInit(employee)
+    const { employeeEditFormInit} = this.props;
+    employeeEditFormInit(this.employee)
   };
 
   onSaveButtonPressed = () => {
-    const { name, phone, shift, employeeUpdate, employee } = this.props;
+    const { name, phone, shift, employeeUpdate, navigation } = this.props;
     // clean empty entries
     const data = _.omitBy({name, phone, shift}, _.isEmpty);
 
     // only update if values changed
     let conditions = [];
-    _.forIn(data, (val, key) => conditions.push(data[key] === employee[key]));
+    _.map(data, (val, key) => conditions.push(data[key] === this.employee[key]));
 
     if (!conditions.every(c => c === true)) {
-      employeeUpdate(employee.uid, data);
+      employeeUpdate(this.employee.uid, data, navigation);
     } else {  // if nothing changed, go back to employee list screen
-      Actions.pop({type: ActionConst.RESET});
+      navigation.goBack(null);
     }
   };
 
   onTextButtonPressed = () => {
     // text schedule to employee
-    const { name, phone, shift } = this.props.employee;
+    const { name, phone, shift } = this.employee;
     const msg = `Hey ${name}, your upcoming shift is on ${shift}.\nSee you!\n\nCEO Trezcool.`;
     Communications.text(phone, msg);
   };
 
   onDeleteButtonPressed = () => {
-    const { employee, employeeDelete } = this.props;
-    employeeDelete(employee.uid);
+    const { employeeDelete, navigation } = this.props;
+    employeeDelete(this.employee.uid, navigation);
   };
 
   renderButton = () => {

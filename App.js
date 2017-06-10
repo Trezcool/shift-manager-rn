@@ -3,21 +3,48 @@ import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { Font } from 'expo';
 import firebase from 'firebase';
+import Sentry from 'sentry-expo';
 
 import reducers from './src/reducers';
-import Router from './src/Router';
-import { Spinner } from './src/components/common';
+import AppNavigator from './src/navigators/AppNavigator';
+import { AppBackground, Spinner } from './src/components/common';
+import { cacheFonts, cacheImages } from './src/utils';
 
 export default class App extends Component {
   state = {
     store: null,
-    fontsLoaded: false,
+    appIsReady: false,
   };
 
   componentWillMount() {
-    // configure firebase
+    //noinspection JSIgnoredPromiseFromCall
+    this._loadAssetsAsync();
+    this._configureFirebase();
+    this._createStore();
+  }
+
+  async _loadAssetsAsync() {
+    const imageAssets = cacheImages([
+      require('./src/assets/icons/icon.jpg'),
+      require('./src/assets/img/background.jpg'),
+      require('./src/assets/img/anon.png'),
+    ]);
+    const fontAssets = cacheFonts([
+      {'josefin-slab-bold': require('./src/assets/fonts/JosefinSlab-Bold.ttf')},
+      {'josefin-slab-thin': require('./src/assets/fonts/JosefinSlab-Thin.ttf')},
+      {'open-sans-bold': require('./src/assets/fonts/OpenSans-Bold.ttf')},
+      {'open-sans-italic': require('./src/assets/fonts/OpenSans-Italic.ttf')},
+      {'open-sans-regular': require('./src/assets/fonts/OpenSans-Regular.ttf')},
+      {'tangerine-bold': require('./src/assets/fonts/Tangerine_Bold.ttf')},
+      {'tangerine-regular': require('./src/assets/fonts/Tangerine_Regular.ttf')},
+    ]);
+
+    await Promise.all([...imageAssets, ...fontAssets]);
+    this.setState({appIsReady: true});
+  }
+
+  _configureFirebase = () => {
     const firebaseConf = {
       apiKey: "AIzaSyDw5LHLlRU8eKZLAVbajlMkdB-fOgZBob0",
       authDomain: "manager-ff790.firebaseapp.com",
@@ -27,30 +54,19 @@ export default class App extends Component {
       messagingSenderId: "654233458722"
     };
     firebase.initializeApp(firebaseConf);
-    // create app store
+  };
+
+  _createStore = () => {
     const firebaseAuth = firebase.auth();
     const firebaseDB = firebase.database();
     const store = createStore(reducers, applyMiddleware(thunk.withExtraArgument({firebaseAuth, firebaseDB})));
-    this.setState({store})
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'josefin-slab-bold': require('./src/assets/fonts/JosefinSlab-Bold.ttf'),
-      'josefin-slab-thin': require('./src/assets/fonts/JosefinSlab-Thin.ttf'),
-      'open-sans-bold': require('./src/assets/fonts/OpenSans-Bold.ttf'),
-      'open-sans-italic': require('./src/assets/fonts/OpenSans-Italic.ttf'),
-      'open-sans-regular': require('./src/assets/fonts/OpenSans-Regular.ttf'),
-      'tangerine-bold': require('./src/assets/fonts/Tangerine_Bold.ttf'),
-      'tangerine-regular': require('./src/assets/fonts/Tangerine_Regular.ttf'),
-    });
-    this.setState({fontsLoaded: true});
-  }
+    this.setState({store});
+  };
 
   renderView = () => {
-    return this.state.fontsLoaded ? (
+    return this.state.appIsReady ? (
       <View style={styles.container}>
-        <Router />
+        <AppNavigator />
       </View>
     ) : <Spinner color="#2980B9" />;
   };
@@ -58,7 +74,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={this.state.store}>
-        {this.renderView()}
+        <AppBackground>
+          {this.renderView()}
+        </AppBackground>
       </Provider>
     );
   }
@@ -67,6 +85,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAECEE',
-  },
+  }
 });
+
+Sentry.config('https://1e9c442a83dc4b68a72ab6206efc07e3@sentry.io/178178').install();

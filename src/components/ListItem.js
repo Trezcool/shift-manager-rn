@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-
-import { CardSection } from './common';
+import { StyleSheet } from 'react-native';
+import { ListItem as RNEListItem } from 'react-native-elements';
 
 class ListItem extends Component {
   onRowPressed = () => {
-    const { employee } = this.props;
-    Actions.employeeEdit({title: employee.name, employee});
+    const { employee: { item }, navigation } = this.props;
+    navigation.navigate('EmployeeEdit', { employee: item })
   };
 
   render() {
-    const { employee } = this.props;
+    const { employee: { item } } = this.props;
 
     return (
-    <TouchableWithoutFeedback onPress={this.onRowPressed}>
-      <View>
-        <CardSection>
-          <Text style={styles.title}>{employee.name}</Text>
-        </CardSection>
-      </View>
-    </TouchableWithoutFeedback>
+      <RNEListItem
+        roundAvatar
+        title={item.name}
+        subtitle={item.phone}
+        avatar={require('../../src/assets/img/anon.png')}
+        onPress={this.onRowPressed}
+        underlayColor="#E6E8EA"
+        fontFamily="open-sans-regular"
+        titleStyle={styles.title}
+        containerStyle={styles.container}
+      />
     );
   }
 }
@@ -29,7 +31,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     paddingLeft: 15,
-    fontFamily: 'open-sans-regular',
+  },
+  container: {
+    borderBottomWidth: 0,
   }
 });
 
