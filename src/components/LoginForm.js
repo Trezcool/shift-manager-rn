@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import * as AuthActions from '../actions/AuthActions';
-import { Button, Card, CardSection, Footer, Input, Link, Spinner } from './common';
+import { Button2, Card, CardSection, Footer, Input, Link, Spinner } from './common';
 import { navigateReset } from '../utils';
 
 const mapStateToProps = ({ auth }) => {
@@ -62,12 +63,14 @@ class LoginForm extends Component {
     return (
       <View>
         <CardSection lastChild>
-          <Button
-            title={isLogin && 'Log In' || 'Sign Up'}
+          <Button2
             disabled={!(email && password)}
             onPress={this.onSubmit}
-            style={{flex: 1}}
-          />
+            style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}
+          >
+            <Icon name="sign-in" style={styles.icon} />
+            <Text style={styles.title}>{isLogin && 'Log In' || 'Sign Up'}</Text>
+          </Button2>
         </CardSection>
         <CardSection lastChild>
           <Link
@@ -136,6 +139,23 @@ class LoginForm extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  title: {
+    alignSelf: 'center',
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  icon: {
+    alignSelf: 'center',
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '600',
+    paddingTop: 8,
+    paddingBottom: 8,
+    marginRight: 10,
   },
   error: {
     paddingLeft: 20,

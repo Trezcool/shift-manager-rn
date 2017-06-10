@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Button as RNButton, ListView, StyleSheet, View } from 'react-native';
+import { ListView, StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import { employeesFetch } from '../actions/EmployeeActions';
-import { Spinner } from './common';
+import { Button2, Spinner } from './common';
 import ListItem from './ListItem';
 
 const mapStateToProps = state => {
@@ -19,8 +20,14 @@ class EmployeeList extends Component {
   //noinspection JSUnusedGlobalSymbols
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: 'Employees',
-    headerLeft: <RNButton title="Log Out" onPress={() => navigation.state.params.logout(navigation)} color={'#2980B9'} />,
-    headerRight: <RNButton title="Add" onPress={() => navigation.navigate('EmployeeCreate')} color={'#2980B9'} />,
+    headerLeft:
+      <Button2 onPress={() => navigation.state.params.logout(navigation)} style={styles.headerButton}>
+        <Icon name="sign-out" style={[styles.icon, styles.iconLeft]} />
+      </Button2>,
+    headerRight:
+      <Button2 onPress={() => navigation.navigate('EmployeeCreate')} style={styles.headerButton}>
+        <Icon name="user-plus" style={styles.icon} />
+      </Button2>,
   });
 
   componentWillMount() {
@@ -59,6 +66,22 @@ class EmployeeList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headerButton: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+  },
+  icon: {
+    alignSelf: 'center',
+    fontWeight: '600',
+    paddingTop: 8,
+    paddingBottom: 8,
+    marginRight: 10,
+    color: '#2980B9',
+    fontSize: 24,
+  },
+  iconLeft: {
+    transform: [{rotate: '180deg'}],
   }
 });
 
