@@ -28,6 +28,7 @@ export default class App extends Component {
     const imageAssets = cacheImages([
       require('./src/assets/icons/icon.jpg'),
       require('./src/assets/img/background.jpg'),
+      require('./src/assets/img/anon.png'),
     ]);
     const fontAssets = cacheFonts([
       {'josefin-slab-bold': require('./src/assets/fonts/JosefinSlab-Bold.ttf')},

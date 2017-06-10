@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { ListView, StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { List } from "react-native-elements";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
@@ -52,12 +53,13 @@ class EmployeeList extends Component {
   render() {
     return this.props.loading ? <View style={{flex: 1}}><Spinner color="#2980B9"/></View> : (
       <Animatable.View animation="slideInUp" style={styles.container}>
-        <ListView
-          enableEmptySections
-          dataSource={this.dataSource}
-          renderRow={this.renderRow}
-          style={styles.container}
-        />
+        <List containerStyle={styles.list}>
+          <ListView
+            enableEmptySections
+            dataSource={this.dataSource}
+            renderRow={this.renderRow}
+          />
+        </List>
       </Animatable.View>
     );
   }
@@ -65,6 +67,10 @@ class EmployeeList extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    marginTop: -20,
+  },
+  list: {
     flex: 1,
   },
   headerButton: {

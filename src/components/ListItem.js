@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-
-import { CardSection } from './common';
+import { StyleSheet } from 'react-native';
+import { ListItem as RNEListItem } from 'react-native-elements';
 
 class ListItem extends Component {
   onRowPressed = () => {
@@ -13,13 +12,17 @@ class ListItem extends Component {
     const { employee } = this.props;
 
     return (
-    <TouchableWithoutFeedback onPress={this.onRowPressed}>
-      <View>
-        <CardSection>
-          <Text style={styles.title}>{employee.name}</Text>
-        </CardSection>
-      </View>
-    </TouchableWithoutFeedback>
+      <RNEListItem
+        roundAvatar
+        key={employee.uid}
+        title={employee.name}
+        subtitle={employee.phone}
+        avatar={require('../../src/assets/img/anon.png')}
+        onPress={this.onRowPressed}
+        underlayColor="#EAECEE"
+        fontFamily="open-sans-regular"
+        titleStyle={styles.title}
+      />
     );
   }
 }
@@ -28,7 +31,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     paddingLeft: 15,
-    fontFamily: 'open-sans-regular',
   }
 });
 
