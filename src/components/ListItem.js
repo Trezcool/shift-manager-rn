@@ -21,6 +21,7 @@ class ListItem extends Component {
         underlayColor="#E6E8EA"
         fontFamily="open-sans-regular"
         titleStyle={styles.title}
+        subtitleStyle={styles.subtitle}
         containerStyle={styles.container}
       />
     );
@@ -30,6 +31,9 @@ class ListItem extends Component {
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
+    paddingLeft: 15,
+  },
+  subtitle: {
     paddingLeft: 15,
   },
   container: {
