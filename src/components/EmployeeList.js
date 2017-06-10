@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { ListView, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { List } from "react-native-elements";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -33,17 +33,6 @@ class EmployeeList extends Component {
 
   componentWillMount() {
     this.props.employeesFetch();
-    this.createDataSource(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.createDataSource(nextProps)
-  }
-
-  createDataSource({ employees }) {
-    //noinspection JSUnusedGlobalSymbols
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.uid !== r2.uid});
-    this.dataSource = ds.cloneWithRows(employees);
   }
 
   renderRow = employee => {
@@ -51,14 +40,16 @@ class EmployeeList extends Component {
   };
 
   render() {
-    return this.props.loading ? <View style={{flex: 1}}><Spinner color="#2980B9"/></View> : (
+    const { loading, employees } = this.props;
+
+    return loading ? <View style={{flex: 1}}><Spinner color="#2980B9"/></View> : (
       <Animatable.View animation="slideInUp" style={styles.container}>
         <List containerStyle={styles.list}>
-          <ListView
-            enableEmptySections
-            dataSource={this.dataSource}
-            renderRow={this.renderRow}
-            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+          <FlatList
+            data={employees}
+            keyExtractor={employee => employee.uid}
+            renderItem={this.renderRow}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
           />
         </List>
       </Animatable.View>
@@ -74,6 +65,8 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
   },
   headerButton: {
     backgroundColor: 'transparent',
@@ -92,8 +85,10 @@ const styles = StyleSheet.create({
     transform: [{rotate: '180deg'}],
   },
   separator: {
-    borderBottomColor: 'rgba(189, 198, 207, 0.7)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    height: 1,
+    width: '86%',
+    backgroundColor: 'rgba(189, 198, 207, 0.7)',
+    marginLeft: '14%',
   }
 });
 
