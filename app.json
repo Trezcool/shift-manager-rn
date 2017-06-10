@@ -2,9 +2,9 @@
   "expo": {
     "sdkVersion": "16.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icons/app.png",
+    "icon": "./src/assets/icons/icon.jpg",
     "loading": {
-      "icon": "./src/assets/icons/loading.png",
+      "icon": "./src/assets/icons/icon.jpg",
       "hideExponentText": false
     },
     "ios": {
