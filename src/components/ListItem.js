@@ -19,7 +19,7 @@ class ListItem extends Component {
         subtitle={employee.phone}
         avatar={require('../../src/assets/img/anon.png')}
         onPress={this.onRowPressed}
-        underlayColor="#EAECEE"
+        underlayColor="#E6E8EA"
         fontFamily="open-sans-regular"
         titleStyle={styles.title}
       />

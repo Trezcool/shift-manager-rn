@@ -58,6 +58,7 @@ class EmployeeList extends Component {
             enableEmptySections
             dataSource={this.dataSource}
             renderRow={this.renderRow}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
           />
         </List>
       </Animatable.View>
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   headerButton: {
     backgroundColor: 'transparent',
@@ -88,6 +90,10 @@ const styles = StyleSheet.create({
   },
   iconLeft: {
     transform: [{rotate: '180deg'}],
+  },
+  separator: {
+    borderBottomColor: 'rgba(189, 198, 207, 0.7)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   }
 });
 
